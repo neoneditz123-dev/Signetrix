@@ -1,0 +1,13 @@
+{
+  "name": "signetrix-ai",
+  "version": "1.1.0",
+  "private": true,
+  "description": "Signetrix brand governance studio with a GroqCloud serverless AI proxy.",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "check": "node scripts/check.js",
+    "test": "node scripts/test-api.js"
+  }
+}
