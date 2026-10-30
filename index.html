@@ -81,6 +81,8 @@ mark[data-fi]{cursor:pointer}mark.fx{background:color-mix(in srgb,var(--ok) 28%,
 body[data-motion="subtle"] .view.on{animation:fadeIn .22s ease-out}body[data-motion="smooth"] .view.on{animation:slideFade .32s cubic-bezier(.2,.7,.2,1)}body[data-motion="pop"] .c{animation:popIn .28s ease-out}body[data-motion="glow"] .nav button.on{box-shadow:inset 3px 0 var(--ac),0 0 15px color-mix(in srgb,var(--ac) 22%,transparent)}body[data-motion="none"] *,body[data-motion="none"] *::before,body[data-motion="none"] *::after{animation:none!important;transition:none!important}
 @keyframes fadeIn{from{opacity:.45}to{opacity:1}}@keyframes slideFade{from{opacity:.4;transform:translateY(7px)}to{opacity:1;transform:translateY(0)}}@keyframes popIn{from{opacity:.6;transform:scale(.985)}to{opacity:1;transform:scale(1)}}
 @media(prefers-reduced-motion:reduce){body:not([data-motion="smooth"]):not([data-motion="pop"]):not([data-motion="glow"]) *,body:not([data-motion="smooth"]):not([data-motion="pop"]):not([data-motion="glow"]) *::before,body:not([data-motion="smooth"]):not([data-motion="pop"]):not([data-motion="glow"]) *::after{animation:none!important;transition:none!important}}
+
+.ai-result{border:1px solid var(--ln);background:var(--bg);border-radius:12px;padding:14px;margin-top:10px}.ai-result h3{margin:0 0 7px}.ai-result p{white-space:pre-wrap;margin:6px 0}.ai-result ul{margin:7px 0;padding-left:20px}.ai-result li{margin:5px 0}.ai-tag{display:inline-block;border:1px solid var(--ln);border-radius:7px;padding:3px 8px;margin:3px;font-size:12px}
 </style></head><body>
 <div class="scrim" id="scrim"></div>
 <aside class="side"><div class="brand"><div class="logo">S</div><div><b>Signetrix</b><small>Brand governance studio</small></div></div>
@@ -129,7 +131,9 @@ body[data-motion="subtle"] .view.on{animation:fadeIn .22s ease-out}body[data-mot
 <div class="h" style="margin-top:14px"><h3>Annotated draft</h3><span class="chip" id="rRead"></span></div><div class="ann" id="rAnn"></div>
 <div class="h" style="margin-top:16px"><h3>Findings &amp; evidence</h3><span class="chip" id="rCount"></span></div><div id="rFind"></div>
 <div class="f" style="margin-top:16px"><label for="rRev">Suggested revision (editable)</label><textarea id="rRev"></textarea><small>Rule-based edits. Check facts and meaning before publishing.</small></div>
-<div class="row"><button class="btn p" id="rUse">Edit revision &amp; re-analyze</button><button class="btn" id="rSave">Save revision as new review</button></div></div></div></div></section>
+<div class="row"><button class="btn p" id="rUse">Edit revision &amp; re-analyze</button><button class="btn" id="rSave">Save revision as new review</button></div></div></div></div>
+<div class="c s12" id="aiReviewerCard" style="margin-top:16px"><div class="h"><div><h2>AI Brand Compliance Reviewer</h2><div class="sub">Gemini reviews this draft against your Brand DNA, approved facts and local findings.</div></div><span class="chip">AI-assisted</span></div><div class="row"><button class="btn p" id="aiReviewRun">Run AI compliance review</button></div><div id="aiReviewStatus" class="sub" style="margin-top:10px">Run your normal review first or enter a draft above.</div><div id="aiReviewOut" style="margin-top:12px"></div></div>
+</section>
 
 <section class="view" id="dna"><div class="g"><div class="c s7"><div class="h"><div><h2>Brand DNA profile</h2><div class="sub">Powers every brand-alignment check. Saved on this device.</div></div></div>
 <div class="two"><div class="f"><label for="bName">Brand name</label><input id="bName"></div><div class="f"><label for="bTone">Preferred voice</label><select id="bTone"><option value="professional">Professional &amp; clear</option><option value="friendly">Friendly &amp; conversational</option><option value="bold">Bold &amp; energetic</option><option value="academic">Academic &amp; evidence-led</option><option value="empathetic">Empathetic &amp; supportive</option></select></div></div>
@@ -137,11 +141,15 @@ body[data-motion="subtle"] .view.on{animation:fadeIn .22s ease-out}body[data-mot
 <div class="f"><label for="bFacts">Approved facts (one per line)</label><textarea id="bFacts" style="min-height:80px"></textarea></div><div class="f"><label for="bNotes">Guidelines / notes</label><textarea id="bNotes" style="min-height:80px"></textarea></div>
 <div class="row"><button class="btn p" id="bSave">Save brand DNA</button><button class="btn d" id="bReset">Reset profile</button></div>
 <div class="c" style="margin-top:16px;padding:14px"><div class="h"><div><h3>Guideline version history</h3><div class="sub">Save snapshots before changing your brand rules. Restore an older version anytime.</div></div><button class="btn sm" id="saveGuidelineVersion">Save version</button></div><div id="guidelineVersions" class="sub">No saved versions yet.</div></div></div>
-<div class="c s5"><h2>Current profile</h2><div id="bSum" style="margin-top:12px"></div><p class="sub">Approved facts are not independently verified.</p></div></div></section>
+<div class="c s5"><h2>Current profile</h2><div id="bSum" style="margin-top:12px"></div><p class="sub">Approved facts are not independently verified.</p></div></div>
+<div class="c s12" id="aiDnaCard" style="margin-top:16px"><div class="h"><div><h2>Brand DNA Intelligence Engine</h2><div class="sub">Turn your saved brand profile into a structured voice guide, consistency checks and practical recommendations.</div></div><span class="chip">AI-assisted</span></div><button class="btn p" id="aiDnaRun">Generate brand intelligence</button><div id="aiDnaStatus" class="sub" style="margin-top:10px"></div><div id="aiDnaOut" style="margin-top:12px"></div></div>
+</section>
 
 <section class="view" id="simulator"><div class="g"><div class="c s6"><div class="f"><label for="sType">Content type</label><select class="ty" id="sType"></select></div><div class="f"><label for="vA">Version A (current)</label><textarea id="vA"></textarea></div></div>
 <div class="c s6"><div class="f"><label for="vB">Version B (proposed)</label><textarea id="vB" style="min-height:196px"></textarea></div></div>
-<div class="c s12"><div class="row"><button class="btn p" id="sGo">Compare versions</button><button class="btn" id="sSample">Load sample</button></div><div id="sOut" class="empty">Compare two drafts to see which aligns better and why.</div></div></div></section>
+<div class="c s12"><div class="row"><button class="btn p" id="sGo">Compare versions</button><button class="btn" id="sSample">Load sample</button></div><div id="sOut" class="empty">Compare two drafts to see which aligns better and why.</div></div></div>
+<div class="c s12" id="aiImpactCard" style="margin-top:16px"><div class="h"><div><h2>AI Brand Impact Simulator</h2><div class="sub">Compare the two versions for brand alignment, meaning, claims and likely audience impact. Review suggestions before accepting anything.</div></div><span class="chip">AI-assisted</span></div><button class="btn p" id="aiImpactRun">Run AI impact simulation</button><div id="aiImpactStatus" class="sub" style="margin-top:10px"></div><div id="aiImpactOut" style="margin-top:12px"></div></div>
+</section>
 
 <section class="view" id="drift"><div class="g"><div class="c s7"><div class="h"><div><h2>Recurring drift signals</h2><div class="sub">Repeated findings across saved reviews.</div></div><button class="btn sm" id="dRef">Refresh</button></div><div id="drOut"></div></div><div class="c s5"><h2>Suggested guideline updates</h2><div id="drSug" style="margin-top:10px"></div></div></div></section>
 
@@ -629,4 +637,126 @@ renderMemoryMap();
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',bootMap);else bootMap();
 })();
 </script>
+
+<script>
+(function(){
+'use strict';
+const byId=id=>document.getElementById(id);
+const escAI=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+function brandProfile(){
+ return {
+  name:byId('bName')?.value||'Signetrix',
+  tone:byId('bTone')?.value||'professional',
+  preferred:byId('bPref')?.value||'',
+  restricted:byId('bRes')?.value||'',
+  approvedFacts:byId('bFacts')?.value||'',
+  guidelines:byId('bNotes')?.value||''
+ };
+}
+function showStatus(id,msg){const el=byId(id);if(el)el.textContent=msg;}
+function renderObject(data){
+ if(typeof data==='string') return '<div class="ai-result"><p>'+escAI(data)+'</p></div>';
+ if(Array.isArray(data)) return '<ul>'+data.map(x=>'<li>'+escAI(typeof x==='string'?x:JSON.stringify(x))+'</li>').join('')+'</ul>';
+ if(data&&typeof data==='object'){
+  return '<div class="ai-result">'+Object.entries(data).map(([k,v])=>{
+   const label=k.replace(/([A-Z])/g,' $1').replace(/^./,x=>x.toUpperCase());
+   return '<h3>'+escAI(label)+'</h3>'+((Array.isArray(v))?renderObject(v):typeof v==='object'?renderObject(v):'<p>'+escAI(v)+'</p>');
+  }).join('')+'</div>';
+ }
+ return '<div class="ai-result"><p>'+escAI(data)+'</p></div>';
+}
+async function callAI(action,payload,statusId,outId,buttonId){
+ const btn=byId(buttonId),out=byId(outId);
+ if(btn){btn.disabled=true;btn.dataset.old=btn.textContent;btn.textContent='Working…';}
+ showStatus(statusId,'Connecting securely to Gemini…');
+ if(out)out.innerHTML='';
+ try{
+  const res=await fetch('/api/ai',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action,payload})});
+  const body=await res.json().catch(()=>({error:'The server returned an unreadable response.'}));
+  if(!res.ok)throw new Error(body.error||('Request failed ('+res.status+').'));
+  if(out)out.innerHTML=renderObject(body.result);
+  showStatus(statusId,'AI analysis complete. Treat the output as suggestions and verify facts before publishing.');
+ }catch(err){
+  showStatus(statusId,'Could not complete AI analysis: '+err.message+' Check the Vercel deployment and GEMINI_API_KEY setting.');
+ }finally{
+  if(btn){btn.disabled=false;btn.textContent=btn.dataset.old||'Run AI analysis';}
+ }
+}
+byId('aiReviewRun')?.addEventListener('click',()=>{
+ const text=byId('rText')?.value?.trim()||'';
+ if(!text){showStatus('aiReviewStatus','Paste a draft into Content to review first.');return;}
+ const local=byId('rep')&&!byId('rep').hidden?{
+  score:byId('rNum')?.textContent||'Not run',
+  summary:byId('rSum')?.textContent||'',
+  findings:byId('rFind')?.innerText||''
+ }:{};
+ callAI('compliance',{brand:brandProfile(),contentType:byId('cType')?.selectedOptions?.[0]?.textContent||'',title:byId('rTitle')?.value||'',context:byId('rCtx')?.value||'',draft:text,existingRuleBasedFindings:local},'aiReviewStatus','aiReviewOut','aiReviewRun');
+});
+byId('aiDnaRun')?.addEventListener('click',()=>{
+ const p=brandProfile();
+ callAI('brand_dna',{brand:p,reviewHistory:[]},'aiDnaStatus','aiDnaOut','aiDnaRun');
+});
+byId('aiImpactRun')?.addEventListener('click',()=>{
+ const a=byId('vA')?.value?.trim()||'',b=byId('vB')?.value?.trim()||'';
+ if(!a||!b){showStatus('aiImpactStatus','Enter both Version A and Version B first.');return;}
+ callAI('impact',{brand:brandProfile(),contentType:byId('sType')?.selectedOptions?.[0]?.textContent||'',versionA:a,versionB:b},'aiImpactStatus','aiImpactOut','aiImpactRun');
+});
+})();
+</script>
+
+<style id="signetrix-copilot-styles">
+#signetrixCopilotLauncher{position:fixed;right:22px;bottom:22px;z-index:9998;border:0;border-radius:999px;padding:13px 18px;background:var(--ac);color:#fff;font:700 14px inherit;box-shadow:0 8px 28px #0003;cursor:pointer}
+#signetrixCopilot{position:fixed;right:22px;bottom:82px;width:min(390px,calc(100vw - 28px));height:min(560px,calc(100vh - 115px));z-index:9999;background:var(--pn);color:var(--tx);border:1px solid var(--ln);border-radius:17px;box-shadow:0 18px 55px #0004;display:none;overflow:hidden;grid-template-rows:auto 1fr auto}
+#signetrixCopilot.open{display:grid}
+#signetrixCopilot .cp-head{padding:13px 15px;border-bottom:1px solid var(--ln);display:flex;align-items:center;justify-content:space-between;gap:10px}
+#signetrixCopilot .cp-head small{display:block;color:var(--mu);margin-top:3px}
+#signetrixCopilot .cp-messages{padding:13px;overflow:auto;display:flex;flex-direction:column;gap:10px}
+#signetrixCopilot .cp-msg{max-width:91%;padding:10px 12px;border-radius:13px;background:var(--bg);border:1px solid var(--ln);font-size:13px;line-height:1.5;white-space:pre-wrap;overflow-wrap:anywhere}
+#signetrixCopilot .cp-msg.user{align-self:flex-end;background:var(--ac);color:#fff;border-color:transparent}
+#signetrixCopilot .cp-msg.bot{align-self:flex-start}
+#signetrixCopilot .cp-foot{border-top:1px solid var(--ln);padding:10px;display:flex;gap:8px}
+#signetrixCopilot .cp-foot input{min-width:0;flex:1;background:var(--bg);color:var(--tx);border:1px solid var(--ln);border-radius:10px;padding:11px}
+#signetrixCopilot .cp-foot button{white-space:nowrap}
+#signetrixCopilot .cp-tools{display:flex;gap:6px;flex-wrap:wrap;padding:0 12px 9px}
+#signetrixCopilot .cp-tools button{font-size:11px}
+@media(max-width:520px){#signetrixCopilot{right:10px;bottom:76px;width:calc(100vw - 20px);height:min(72vh,590px)}#signetrixCopilotLauncher{right:14px;bottom:14px}}
+</style>
+<button id="signetrixCopilotLauncher" type="button" aria-expanded="false" aria-controls="signetrixCopilot">✦ Signetrix Copilot</button>
+<section id="signetrixCopilot" role="dialog" aria-label="Signetrix Copilot" aria-modal="false">
+ <div class="cp-head"><div><strong>✦ Signetrix Copilot</strong><small>Ask about features, reviews or navigation</small></div><button type="button" class="btn sm" id="signetrixCopilotClose" aria-label="Close copilot">✕</button></div>
+ <div class="cp-messages" id="signetrixCopilotMessages" aria-live="polite"><div class="cp-msg bot">Hi! I'm your Signetrix guide. Ask me how to use a feature, understand a review, or find a section.</div></div>
+ <div><div class="cp-tools"><button class="btn sm" type="button" data-cp-prompt="How do I get started with Signetrix?">Getting started</button><button class="btn sm" type="button" data-cp-prompt="Explain my review results.">Explain results</button><button class="btn sm" type="button" data-cp-prompt="Where can I edit Brand DNA?">Find Brand DNA</button></div>
+ <form class="cp-foot" id="signetrixCopilotForm"><input id="signetrixCopilotInput" maxlength="2000" autocomplete="off" placeholder="Ask Signetrix Copilot…" aria-label="Message to Signetrix Copilot"><button class="btn p" id="signetrixCopilotSend" type="submit">Send</button></form></div>
+</section>
+<script id="signetrix-copilot-script">
+(function(){
+ 'use strict';
+ const $=id=>document.getElementById(id), panel=$('signetrixCopilot'), launcher=$('signetrixCopilotLauncher'), list=$('signetrixCopilotMessages'), input=$('signetrixCopilotInput'), form=$('signetrixCopilotForm');
+ if(!panel||!launcher||!form)return;
+ const history=[]; let busy=false;
+ const safe=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+ function add(role,text){const el=document.createElement('div');el.className='cp-msg '+(role==='user'?'user':'bot');el.textContent=text;list.appendChild(el);list.scrollTop=list.scrollHeight;}
+ function open(){panel.classList.add('open');launcher.setAttribute('aria-expanded','true');input.focus();}
+ function close(){panel.classList.remove('open');launcher.setAttribute('aria-expanded','false');launcher.focus();}
+ launcher.addEventListener('click',()=>panel.classList.contains('open')?close():open()); $('signetrixCopilotClose').addEventListener('click',close);
+ document.querySelectorAll('[data-cp-prompt]').forEach(b=>b.addEventListener('click',()=>{input.value=b.dataset.cpPrompt;form.requestSubmit()}));
+ function currentSection(){return document.querySelector('.view.on')?.id||'dashboard';}
+ function brand(){return {name:$('bName')?.value||'',tone:$('bTone')?.value||'',preferred:$('bPref')?.value||'',restricted:$('bRes')?.value||'',approvedFacts:$('bFacts')?.value||'',guidelines:$('bNotes')?.value||''};}
+ function review(){return {title:$('rTitle')?.value||'',contentType:$('cType')?.selectedOptions?.[0]?.textContent||'',score:$('rNum')?.textContent||'',summary:$('rSum')?.textContent||'',findings:$('rFind')?.innerText?.slice(0,2500)||''};}
+ function navigate(id){const allowed=['dashboard','review','dna','drift','history','graphs','research','toolkit','memorymap','profile'];if(!allowed.includes(id))return;const btn=document.querySelector('[data-go="'+id+'"]');if(btn)btn.click();else if(id==='dashboard')location.hash='#dashboard';}
+ form.addEventListener('submit',async e=>{
+  e.preventDefault();const message=input.value.trim();if(!message||busy)return;
+  add('user',message);history.push({role:'user',content:message});input.value='';busy=true;$('signetrixCopilotSend').disabled=true;add('bot','Thinking…');const pending=list.lastElementChild;
+  try{
+   const res=await fetch('/api/ai',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'copilot',payload:{message,messages:history.slice(-8),currentSection:currentSection(),brand:brand(),reviewContext:review()}})});
+   const data=await res.json().catch(()=>({error:'Server returned an unreadable response.'}));if(!res.ok)throw new Error(data.error||'Copilot request failed.');
+   const result=data.result||{};pending.textContent=result.reply||'I could not prepare a response. Please try again.';history.push({role:'assistant',content:pending.textContent});
+   if(result.navigateTo){const nav=document.createElement('button');nav.type='button';nav.className='btn sm';nav.textContent='Open '+result.navigateTo.replace(/([A-Z])/g,' $1');nav.addEventListener('click',()=>navigate(result.navigateTo));pending.appendChild(document.createElement('br'));pending.appendChild(nav);}
+   if(Array.isArray(result.quickReplies))result.quickReplies.slice(0,3).forEach(q=>{const b=document.createElement('button');b.type='button';b.className='btn sm';b.style.margin='5px 5px 0 0';b.textContent=q;b.addEventListener('click',()=>{input.value=q;form.requestSubmit()});pending.appendChild(b)});
+  }catch(err){pending.textContent='I could not connect: '+err.message+' Check your Vercel deployment and GEMINI_API_KEY setting.';}
+  finally{busy=false;$('signetrixCopilotSend').disabled=false;list.scrollTop=list.scrollHeight;}
+ });
+})();
+</script>
+
 </body></html>
